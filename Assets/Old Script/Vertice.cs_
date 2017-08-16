@@ -1,0 +1,57 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// OLD CODES
+/// </summary>
+
+public class Vertice : MonoBehaviour {
+
+    private Camera MainCamera;
+    private bool isdragged = false;
+
+	void Awake ()
+    {
+        MainCamera = FindObjectOfType<Camera>();
+	}
+	
+	// Update is called once per frame
+	void Update ()
+    {
+		
+	}
+
+    void FixedUpdate()
+    {
+        
+        if(isdragged)
+        {
+            if(Input.GetMouseButton(0))
+            {
+                Vector3 dir = MainCamera.ScreenToWorldPoint(Input.mousePosition);
+                dir -= transform.position;
+                dir.z = 0;
+                transform.Translate(dir);
+            }
+            else
+            {
+                isdragged = false;
+            }
+        }
+    }
+
+    void OnMouseEnter()
+    {
+        
+    }
+    void OnMouseExit()
+    {
+        
+    }
+    void OnMouseDown()
+    {
+        isdragged = true;
+    }
+
+}

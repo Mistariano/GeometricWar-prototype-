@@ -1,0 +1,29 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// OLD CODES
+/// </summary>
+
+public class SquareMesh : Mesh
+{
+    protected override void initMesh()
+    {
+        Vector3[] vertices = new Vector3[4]
+        {
+            new Vector3(0.5f,0.5f,0),
+            new Vector3(-0.5f,0.5f,0),
+            new Vector3(0.5f,-0.5f,0),
+            new Vector3(-0.5f,-0.5f,0)
+        };
+        mesh.vertices = vertices;
+        int[] triangles = new int[2 * 3]
+        {
+            0,3,1,
+            0,2,3
+        };
+        mesh.triangles = triangles;
+    }
+	
+}

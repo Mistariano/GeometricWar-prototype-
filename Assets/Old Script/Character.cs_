@@ -1,0 +1,119 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Character : MonoBehaviour
+{
+
+    public float Velocity;
+    public float DashVelocity;
+    public float DashTime;
+    public float DashDelay;
+
+    float dashTiming = 0;
+    bool dashAvaliable = true;
+    bool moving = false;
+    bool dashing = false;
+    Vector3 Direction = new Vector3(0,0,0);
+
+	//Use this for initialization
+	void Start ()
+    {
+        
+	}
+	
+	// Update is called once per frame
+	void Update ()
+    {
+        GetInput();
+        Rotate();
+        Move();//一般位移
+        Dash();//冲刺
+        Shot();
+    }
+    
+    void GetInput()
+    {
+        float h = Input.GetAxis("Horizontal") ;
+        float v = Input.GetAxis("Vertical") ;
+        Direction.x = h;
+        Direction.y = v;
+        if (Direction != Vector3.zero)
+        {
+            moving = true;
+        }
+        else
+        {
+            moving = false;
+        }
+    }
+    void Rotate()
+    {
+        if (moving)
+        {
+            transform.up = Direction;
+        }
+    }
+
+    void Move()
+    {
+        if (moving)
+        {
+            if (!dashing)//不在冲刺状态时
+            {
+                transform.Translate(Vector3.up * Velocity * Time.deltaTime);
+            }
+        }
+        
+    }
+
+    void Dash()
+    {
+        if(dashTiming>0)
+        {
+            //如果计时器正在运作
+            if (dashing)
+            {
+                //如果正在冲刺
+                transform.Translate(Vector3.up * DashVelocity * Time.deltaTime);
+            }
+            dashTiming -= Time.deltaTime;
+            if(dashTiming<=0)
+            {
+                //如果计时器结束运作
+                if(dashing)
+                {
+                    //如果冲刺结束：进入冲刺冷却，重置计时器至冷却时间
+                    dashAvaliable = false;
+                    dashing = false;
+                    dashTiming = DashDelay;
+                }
+                else
+                {
+                    //如果冷却结束：重置
+                    dashAvaliable = true;
+                    dashTiming = 0;
+                }
+            }
+        }
+        else
+        {
+            //如果计时器未运作，则可以冲刺
+            if (Input.GetButton("Dash"))
+            {
+                dashTiming = DashTime;
+                dashing = true;
+            }
+        }
+    }
+    void Shot()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            
+        }
+    }
+
+}
+
+

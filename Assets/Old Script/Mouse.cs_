@@ -1,0 +1,92 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// OLD CODES
+/// </summary>
+
+public class Mouse : MonoBehaviour
+{
+    private Transform currentMark;
+    private Camera mainCamera;
+    private EditorMgr manager;
+    Vector3 mousePos = new Vector3();
+    private enum MODE
+    {
+        free = 0,
+        point = 1,
+        tile = 3
+    };
+    private MODE mode = MODE.free;
+
+    void Awake()
+    {
+        //currentMark = Instantiate(PointMark);
+        mainCamera = FindObjectOfType<Camera>();
+        manager = FindObjectOfType<EditorMgr>();
+    }
+
+    void Update()
+    {
+        getPos();
+        checkMouseDown();
+        //manager.UpdateMousePos(mousePos);
+    }
+
+    void getPos()
+    {
+        mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        switch (mode)
+        {
+            case MODE.free:
+                mousePos.z = 0.0f;
+                break;
+            case MODE.point:
+                mousePos.x = Mathf.Round(mousePos.x);
+                mousePos.y = Mathf.Round(mousePos.y);
+                mousePos.z = 0.0f;
+                checkMouseDown();
+                break;
+            case MODE.tile:
+                mousePos.x = Mathf.Ceil(mousePos.x) - 0.5f;
+                mousePos.y = Mathf.Ceil(mousePos.y) - 0.5f;
+                mousePos.z = 0.0f;
+                break;
+        }
+        currentMark.transform.position = mousePos;
+    }
+
+
+    void checkMouseDown()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+
+            switch (mode)
+            {
+                case MODE.free: break;
+                case MODE.point:
+                //currentMark = Instantiate(PointMark); break;
+                case MODE.tile:
+                    //Transform mesh=Instantiate(SquareMesh);
+                    //mesh.position = mousePos;
+                    break;
+            }
+        }
+    }
+
+    public void ChangeModeToPoint()
+    {
+        if (currentMark != null) { Destroy(currentMark.gameObject); }
+        //currentMark = Instantiate(PointMark);
+        mode = MODE.point;
+    }
+    public void ChangeModeToTile()
+    {
+        if (currentMark != null) { Destroy(currentMark.gameObject); }
+        //currentMark = Instantiate(TileMark);
+        mode = MODE.tile;
+    }
+
+}

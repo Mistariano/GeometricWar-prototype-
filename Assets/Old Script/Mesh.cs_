@@ -1,0 +1,78 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+/// <summary>
+/// OLD CODES
+/// </summary>
+
+public class Mesh : MonoBehaviour {
+
+    public Transform VerticeSprite;
+    private MeshFilter filter;
+    protected  UnityEngine.Mesh mesh;
+    private Transform[] verticeSprites;
+    private readonly int verticeNum = 4;
+
+	void Awake ()
+    {
+        mesh = new UnityEngine.Mesh();
+        filter = GetComponent<MeshFilter>();
+        filter.mesh = mesh;
+        initMesh();
+        //showVertices();
+    }
+
+
+    // Update is called once per frame
+    void Update ()
+    {
+        checkDrag();
+    }
+
+    protected virtual void initMesh()
+    {
+        ///继承时应该重写这个函数，重设mesh的vertices和triangles等
+        //mesh.name = "MyMesh";
+        
+        Vector3[] vertices = new Vector3[4]
+        {
+            new Vector3(1,1,0),
+            new Vector3(-1,1,0),
+            new Vector3(1,-1,0),
+            new Vector3(-1,-1,0)
+        };
+        mesh.vertices = vertices;
+        int[] triangles = new int[2 * 3]
+        {
+            0,3,1,
+            0,2,3
+        };
+        mesh.triangles = triangles;
+        
+    }
+
+    void showVertices()
+    {
+        verticeSprites = new Transform[verticeNum];
+        for (int i = 0; i < verticeNum; i++)
+        {
+            verticeSprites[i] = Instantiate(VerticeSprite);
+            verticeSprites[i].position = mesh.vertices[i];
+        }
+    }
+
+    void checkDrag()
+    {
+        if (verticeSprites != null)
+        {
+            Vector3[] vts = new Vector3[verticeNum];
+            for (int i = 0; i < verticeNum; i++)
+            {
+                vts[i] = verticeSprites[i].position;
+            }
+            mesh.vertices = vts;
+        }
+    }
+
+}

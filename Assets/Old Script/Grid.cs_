@@ -1,0 +1,52 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Grid : MonoBehaviour
+{
+    public int Length=20;
+    public int Width=20;
+    public float GridSize = 0.9f;
+    public Color GridColor = new Color(1f,1f,1f,1f);
+	void Awake ()
+    {
+        int cnt = 1;
+        float size = GridSize / 2;
+		for(int i=-Width/2;i<=Width/2;i++)
+        {
+            for(int j=-Length/2;j<=Length/2;j++)
+            {
+                GameObject tmp = new GameObject();
+                tmp.name = "Block" + cnt.ToString();
+                tmp.transform.position = new Vector3(i, j, 0);
+                cnt++;
+                tmp.AddComponent<MeshFilter>();
+                tmp.AddComponent<MeshRenderer>();
+                UnityEngine.Mesh mesh = new UnityEngine.Mesh();
+                tmp.GetComponent<MeshFilter>().mesh = mesh;
+                tmp.GetComponent<MeshRenderer>().material.color=GridColor;
+                tmp.GetComponent<MeshRenderer>().material.shader = Shader.Find("Sprites/Default");
+                Vector3[] vertices = new Vector3[4]
+                {
+                    new Vector3(size,size,0),
+                    new Vector3(-size,size,0),
+                    new Vector3(size,-size,0),
+                    new Vector3(-size,-size,0)
+                };
+                mesh.vertices = vertices;
+                int[] triangles =
+                {
+                    0,3,1,
+                    0,2,3
+                };
+                mesh.triangles = triangles;
+            }
+        }
+	}
+	
+	// Update is called once per frame
+	void Update ()
+    {
+
+    }
+}

@@ -1,3 +1,10 @@
+#Something Mist DONNOT want to see
+Debug
+Library
+.vs
+*.meta
+
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
